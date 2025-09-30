@@ -1,0 +1,22 @@
+<div class="max-w-4xl mx-auto">
+  <h1 class="text-3xl font-bold text-gray-900 mb-8">Shopping Cart</h1>
+
+  <%# This is the crucial div that Turbo Stream is looking for %>
+  <div id="cart">
+    <% if @cart_items.any? %>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <%# Cart Items List %>
+        <div class="lg:col-span-2 bg-white rounded-lg shadow-sm border border-gray-200">
+          <div id="cart-items" class="divide-y divide-gray-200">
+            <%= render partial: "carts/cart_item", collection: @cart_items, as: :item %>
+          </div>
+        </div>
+
+        <%# Cart Summary %>
+        <%= render "carts/order_summary", cart_total: cart_total %>
+      </div>
+    <% else %>
+      <%= render "carts/empty_cart" %>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+<%# Instruction 1: Find the element with id="cart-count" and update its content. %>
+<%= turbo_stream.update "cart-count" do %>
+  <% if current_user.cart_items_count > 0 %>
+    <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+      <%= current_user.cart_items_count %>
+    </span>
+  <% end %>
+<% end %>
+
+<%# Instruction 2: Find the element with id="flash-messages" and add the flash partial to it. %>
+<%= turbo_stream.prepend "flash-messages" do %>
+  <%= render "layouts/flash" %>
+<% end %>

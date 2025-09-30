@@ -1,0 +1,23 @@
+<%# Remove the cart item's div from the page %>
+<%= turbo_stream.remove @cart_item %>
+
+<%# If the cart is now empty, replace the entire #cart div with the empty message %>
+<% if current_user.cart_items.none? %>
+  <%= turbo_stream.update "cart" do %>
+    <%= render "carts/empty_cart" %>
+  <% end %>
+<% else %>
+  <%# Otherwise, just update the order summary %>
+  <%= turbo_stream.update "order-summary" do %>
+    <%= render "carts/order_summary", cart_total: current_user.cart_total %>
+  <% end %>
+<% end %>
+
+<%# Also update the cart counter in the navbar %>
+<%= turbo_stream.update "cart-count" do %>
+  <% if current_user.cart_items_count > 0 %>
+    <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+      <%= current_user.cart_items_count %>
+    </span>
+  <% end %>
+<% end %>

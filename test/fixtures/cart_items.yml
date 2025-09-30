@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: customer # <-- Use the 'customer' user
+  product: one
+  quantity: 1
+
+two:
+  user: customer # <-- Use the 'customer' user
+  product: two
+  quantity: 2

@@ -1,0 +1,50 @@
+<%= render(Admin::Shared::LayoutComponent.new(title: "Product Details")) do %>
+  <div class="bg-white rounded-lg shadow p-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <%# Product Image %>
+      <div class="md:col-span-1">
+        <% if @product.images.attached? %>
+          <%= image_tag @product.image, class: "w-full h-auto object-cover rounded-lg" %>
+        <% else %>
+          <div class="w-full h-48 bg-gray-200 rounded-lg flex items-center justify-center">
+            <span class="text-gray-500">No Image</span>
+          </div>
+        <% end %>
+      </div>
+
+      <%# Product Info %>
+      <div class="md:col-span-2 space-y-4">
+        <h2 class="text-2xl font-bold text-gray-900"><%= @product.name %></h2>
+        <p class="text-gray-700"><%= @product.description %></p>
+        
+        <div class="border-t pt-4">
+          <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
+            <div class="sm:col-span-1">
+              <dt class="text-sm font-medium text-gray-500">Price</dt>
+              <dd class="mt-1 text-sm text-gray-900"><%= number_to_currency(@product.price) %></dd>
+            </div>
+            <div class="sm:col-span-1">
+              <dt class="text-sm font-medium text-gray-500">Stock</dt>
+              <dd class="mt-1 text-sm text-gray-900"><%= @product.stock_quantity %> units</dd>
+            </div>
+            <div class="sm:col-span-1">
+              <dt class="text-sm font-medium text-gray-500">Category</dt>
+              <%# FIXED: Used the safe navigation operator (&.) to prevent crashes %>
+              <dd class="mt-1 text-sm text-gray-900"><%= @product.category&.name || "Uncategorized" %></dd>
+            </div>
+            <div class="sm:col-span-1">
+              <dt class="text-sm font-medium text-gray-500">Seller</dt>
+              <dd class="mt-1 text-sm text-gray-900"><%= @product.user.email_address %></dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="border-t pt-6 flex items-center gap-4">
+          <%= link_to "Edit Product", edit_admin_product_path(@product), class: "bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700" %>
+          <%= link_to "Delete Product", admin_product_path(@product), data: { "turbo-method": :delete, "turbo-confirm": "Are you sure?" }, class: "text-red-600 hover:text-red-900" %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

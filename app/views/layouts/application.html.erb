@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "New Marketplace" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-gray-50 antialiased">
+    <header class="bg-white border-b border-gray-200">
+      <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex-shrink-0">
+            <%= link_to "New Marketplace", root_path, class: "text-xl font-bold text-gray-800 hover:text-blue-600 transition-colors" %>
+          </div>
+          
+          <div class="flex items-center space-x-6">
+            <% if authenticated? %>
+              <span class="text-sm text-gray-600">Welcome, <%= current_user.full_name.presence || current_user.email_address %></span>
+              
+              <% if current_user.seller? || current_user.admin? %>
+                <%= link_to "Seller Dashboard", seller_root_path, class: "text-sm font-medium text-gray-600 hover:text-blue-600" %>
+              <% end %>
+
+              <% if current_user.admin? %>
+                <%= link_to "Admin Panel", admin_root_path, class: "text-sm font-medium text-gray-600 hover:text-blue-600" %>
+              <% end %>
+
+              <%= link_to cart_path, class: "relative text-gray-600 hover:text-blue-600" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4z" />
+                </svg>
+                
+                <div id="cart-count">
+                  <% if current_user.cart_items_count > 0 %>
+                    <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                      <%= current_user.cart_items_count %>
+                    </span>
+                  <% end %>
+                </div>
+                <% end %>
+      
+              <%= button_to "Sign Out", sign_out_path, method: :delete, class: "text-sm font-medium text-gray-600 hover:text-blue-600" %>
+            <% else %>
+              <%= link_to "Sign In", sign_in_path, class: "text-sm font-medium text-gray-600 hover:text-blue-600" %>
+              <%= link_to "Sign Up", sign_up_path, class: "bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700" %>
+            <% end %>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="py-8">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div id="flash-messages">
+          <%= render "layouts/flash" %>
+        </div>
+        <%= yield %>
+      </div>
+    </main>
+  </body>
+</html>

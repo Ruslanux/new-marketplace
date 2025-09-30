@@ -1,0 +1,35 @@
+<%# If the item was updated (not destroyed), replace its div with the updated content %>
+<% if @cart_item.persisted? %>
+  <%= turbo_stream.replace @cart_item do %>
+    <%= render "carts/cart_item", item: @cart_item %>
+  <% end %>
+<% else %>
+  <%# If the quantity was set to 0, the item was destroyed, so remove it %>
+  <%= turbo_stream.remove dom_id(@cart_item, :disappearing) %>
+<% end %>
+
+<%# If the whole cart is now empty, replace it %>
+<% if current_user.cart_items.none? %>
+  <%= turbo_stream.update "cart" do %>
+    <%= render "carts/empty_cart" %>
+  <% end %>
+<% else %>
+  <%# Otherwise, just update the summary %>
+  <%= turbo_stream.update "order-summary" do %>
+    <%= render "carts/order_summary", cart_total: current_user.cart_total %>
+  <% end %>
+<% end %>
+
+<%# Update the cart counter in the navbar %>
+<%= turbo_stream.update "cart-count" do %>
+  <% if current_user.cart_items_count > 0 %>
+    <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+      <%= current_user.cart_items_count %>
+    </span>
+  <% end %>
+<% end %>
+
+<%# Show a flash message %>
+<%= turbo_stream.prepend "flash-messages" do %>
+  <%= render "layouts/flash" %>
+<% end %>

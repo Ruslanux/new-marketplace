@@ -1,0 +1,41 @@
+<%= render(Seller::Shared::LayoutComponent.new(title: "Dashboard")) do %>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="bg-white rounded-lg shadow-sm p-6">
+      <h3 class="text-sm font-medium text-gray-500 uppercase">Total Products</h3>
+      <p class="text-3xl font-bold text-gray-900 mt-1"><%= @products_count %></p>
+      <%= link_to "Manage Products →", seller_products_path, class: "text-sm font-medium text-blue-600 hover:text-blue-800 mt-2 inline-block" %>
+    </div>
+    <div class="bg-white rounded-lg shadow-sm p-6">
+      <h3 class="text-sm font-medium text-gray-500 uppercase">Total Sales</h3>
+      <p class="text-3xl font-bold text-gray-900 mt-1"><%= @orders_count %></p>
+      <%= link_to "View Orders →", seller_orders_path, class: "text-sm font-medium text-blue-600 hover:text-blue-800 mt-2 inline-block" %>
+    </div>
+    <div class="bg-white rounded-lg shadow-sm p-6">
+      <h3 class="text-sm font-medium text-gray-500 uppercase">Total Revenue</h3>
+      <p class="text-3xl font-bold text-gray-900 mt-1"><%= number_to_currency(@total_revenue) %></p>
+      <span class="text-sm text-gray-500 mt-2 inline-block">All time earnings</span>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-lg shadow-sm">
+    <h2 class="text-lg font-semibold text-gray-900 p-6 border-b border-gray-200">Recent Sales</h2>
+    <% if @recent_orders.any? %>
+      <div class="divide-y divide-gray-200">
+        <% @recent_orders.each do |item| %>
+          <div class="p-6 flex items-center justify-between hover:bg-gray-50">
+            <div>
+              <p class="font-medium text-gray-900"><%= item.product.name %></p>
+              <p class="text-sm text-gray-600">Order #<%= item.order.id %> - <%= item.quantity %> &times; <%= number_to_currency(item.price) %></p>
+            </div>
+            <div class="text-right">
+              <p class="font-semibold text-gray-900"><%= number_to_currency(item.total_price) %></p>
+              <p class="text-sm text-gray-500"><%= time_ago_in_words(item.created_at) %> ago</p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-center text-gray-500 py-12">You have no sales yet.</p>
+    <% end %>
+  </div>
+<% end %>

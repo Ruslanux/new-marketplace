@@ -1,0 +1,44 @@
+<%# Main container for the products index page %>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+  <%# Page Header %>
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-4">Products</h1>
+    <% if @search_query.present? %>
+      <p class="text-gray-600">Search results for "<%= @search_query %>"</p>
+    <% end %>
+  </div>
+
+  <%# Category Filters %>
+  <div class="mb-8">
+    <h3 class="text-lg font-semibold text-gray-900 mb-4">Filter by Category</h3>
+    <div class="flex flex-wrap gap-2">
+      <%= all_categories_link %>
+      <% @categories.each do |category| %>
+        <%= category_filter_link(category) %>
+      <% end %>
+    </div>
+  </div>
+
+  <%# Products Grid %>
+  <div class="mb-8">
+    <% if @products.any? %>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <% @products.each do |product| %>
+          <%= render(Products::CardComponent.new(product: product)) %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="text-center py-12">
+        <h3 class="text-lg font-medium text-gray-900 mb-2">No products found</h3>
+        <p class="text-gray-600">Try adjusting your search or filter criteria.</p>
+      </div>
+    <% end %>
+  </div>
+
+  <%# Pagination %>
+  <div class="flex justify-center">
+    <%= helpers.paginate @products %>
+  </div>
+
+</div>

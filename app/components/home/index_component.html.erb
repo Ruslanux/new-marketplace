@@ -1,0 +1,40 @@
+<div>
+  <%# Hero Section %>
+  <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white text-center py-20 rounded-lg shadow-xl">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">Welcome to the Marketplace</h1>
+      <p class="text-lg md:text-xl text-blue-100 mb-8">Discover amazing products from our community of trusted sellers.</p>
+      <%= link_to "Shop All Products", products_path, class: "bg-white text-blue-600 px-8 py-3 rounded-full font-semibold text-lg hover:bg-gray-100 transform hover:scale-105 transition-all" %>
+    </div>
+  </div>
+
+  <%# Categories Section %>
+  <div class="py-16">
+    <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Shop by Category</h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+      <% @categories.each do |category| %>
+        <%= link_to products_path(category_id: category.id), class: "group block text-center" do %>
+          <div class="bg-white rounded-lg shadow-sm p-6 group-hover:shadow-lg transition-shadow border border-gray-200">
+            <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="text-3xl font-bold text-blue-600"><%= category.name[0].upcase %></span>
+            </div>
+            <h3 class="font-semibold text-gray-800 group-hover:text-blue-600 transition-colors"><%= category.name %></h3>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <%# Featured Products Section %>
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+    <div class="px-4 sm:px-6 lg:px-8 py-16">
+      <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Featured Products</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <%# Re-using the card component for consistency %>
+        <% @featured_products.each do |product| %>
+          <%= render(Products::CardComponent.new(product: product)) %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

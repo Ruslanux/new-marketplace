@@ -1,0 +1,50 @@
+<%= render(Seller::Shared::LayoutComponent.new(title: "My Products")) do %>
+  
+  <div class="flex justify-between items-center mb-6">
+    <div>
+      <%# This link was removed from here to avoid duplication %>
+    </div>
+    <div class="flex items-center gap-4">
+      <%= link_to "View Archived", discarded_seller_products_path, class: "text-sm font-medium text-gray-600 hover:text-blue-600" %>
+      <%= link_to "Add New Product", new_seller_product_path, class: "bg-blue-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-blue-700" %>
+    </div>
+  </div>
+
+  <% if @products.any? %>
+    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
+            <th class="relative px-6 py-3"><span class="sr-only">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <% @products.each do |product| %>
+            <tr class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><%= product.name %></td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= number_to_currency(product.price) %></td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= product.stock_quantity %></td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-4">
+                <%= link_to "Edit", edit_seller_product_path(product), class: "text-blue-600 hover:text-blue-900" %>
+                <%# This now archives the product instead of deleting it %>
+                <%= link_to "Archive", seller_product_path(product), data: { "turbo-method": :delete, "turbo-confirm": "Are you sure you want to archive this product?" }, class: "text-red-600 hover:text-red-900" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="mt-6">
+      <%= helpers.paginate @products %>
+    </div>
+  <% else %>
+    <div class="text-center bg-white rounded-lg shadow-sm py-20">
+      <h3 class="text-lg font-medium text-gray-900">No active products!</h3>
+      <p class="text-gray-500 mt-1">Add a new product or check your archived items.</p>
+      <%= link_to "Add Product", new_seller_product_path, class: "mt-6 bg-blue-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-blue-700" %>
+    </div>
+  <% end %>
+<% end %>

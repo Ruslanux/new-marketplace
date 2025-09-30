@@ -1,0 +1,101 @@
+<div class="bg-white">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <div class="w-full mb-8" data-controller="gallery">
+      <div class="swiper main-swiper mb-3 border rounded-lg shadow-sm bg-gray-50">
+        <div class="swiper-wrapper">
+          <% @product.images.each do |image| %>
+            <div class="swiper-slide aspect-w-1 aspect-h-1">
+              <%= image_tag image, class: "w-full h-full object-center object-cover" %>
+            </div>
+          <% end %>
+        </div>
+        <div class="swiper-button-next text-gray-500 hover:text-gray-700 transition-colors"></div>
+        <div class="swiper-button-prev text-gray-500 hover:text-gray-700 transition-colors"></div>
+      </div>
+
+      <div thumbsSlider="" class="swiper thumbs-swiper">
+        <div class="swiper-wrapper">
+          <% @product.images.each do |image| %>
+            <div class="swiper-slide cursor-pointer border rounded-md p-1 opacity-60 hover:opacity-100 transition-opacity">
+              <%= image_tag image.variant(resize_to_limit: [100, 100]), class: "w-full h-auto" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="w-full mb-12">
+      <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl"><%= @product.name %></h1>
+      <p class="text-3xl text-blue-600 font-extrabold mt-3"><%= number_to_currency(@product.price) %></p>
+
+      <div class="mt-4 flex items-center">
+        <h3 class="sr-only">Reviews</h3>
+        <div class="flex items-center">
+          <%= rating_stars(@product.average_rating) %>
+        </div>
+        <p class="sr-only"><%= @product.average_rating %> out of 5 stars</p>
+        <a href="#customer-reviews" class="ml-3 text-sm font-medium text-blue-600 hover:text-blue-500 transition-colors">
+          <%= @reviews.count %> reviews
+        </a>
+      </div>
+
+      <div class="mt-6 prose prose-indigo text-gray-700 max-w-none">
+        <h3 class="sr-only">Description</h3>
+        <p><%= @product.description %></p>
+      </div>
+      
+      <div class="mt-8">
+        <% if @product.in_stock? %>
+          <%= button_to "Add to Cart", add_to_cart_path(@product), method: :post, class: "w-full bg-blue-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" %>
+        <% else %>
+          <button class="w-full bg-gray-400 text-white py-3 rounded-lg font-semibold cursor-not-allowed opacity-70">
+            Out of Stock
+          </button>
+        <% end %>
+      </div>
+    </div>
+
+    <div id="customer-reviews" class="border-t pt-12">
+      <h2 class="text-2xl font-bold tracking-tight text-gray-900 mb-8">Customer Reviews</h2>
+      <% if @reviews.any? %>
+        <div class="space-y-10 mb-12">
+          <% @reviews.each do |review| %>
+            <div class="pb-6 border-b border-gray-200 last:border-b-0">
+              <div class="flex items-center mb-2">
+                <%= rating_stars(review.rating) %>
+              </div>
+              <p class="text-lg font-medium text-gray-900 leading-relaxed mb-2"><%= review.comment %></p>
+              <p class="text-sm text-gray-500">by <span class="font-semibold"><%= review.user.full_name %></span> on <%= review.created_at.strftime("%B %d, %Y") %></p>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-gray-500 text-lg mb-12">No reviews yet. Be the first to review this product!</p>
+      <% end %>
+
+      <% if helpers.authenticated? && @review %>
+        <div class="bg-gray-50 p-8 rounded-lg shadow-md border border-gray-100">
+          <h3 class="text-xl font-semibold text-gray-900 mb-6">Write a Review</h3>
+          <%= form_with model: [@product, @review], class: "space-y-6" do |f| %>
+            <div>
+              <%= f.label :rating, class: "block text-sm font-medium text-gray-700 mb-1" %>
+              <%= f.select :rating, (1..5).to_a.reverse.map { |i| ["#{i} star#{'s' if i > 1}", i] }, 
+                {}, 
+                class: "mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm" 
+              %>
+            </div>
+            <div>
+              <%= f.label :comment, class: "block text-sm font-medium text-gray-700 mb-1" %>
+              <%= f.text_area :comment, rows: 4, class: "mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" %>
+            </div>
+            <div>
+              <%= f.submit "Submit Review", class: "w-full bg-blue-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+  </div>
+</div>

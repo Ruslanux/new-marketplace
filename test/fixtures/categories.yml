@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: Electronics
+  slug: electronics
+  description: Fixture for electronic items.
+
+two:
+  name: Books
+  slug: books
+  description: Fixture for various books.
+
+
+#one:
+  #name: MyString
+  #lug: MyString
+  #description: MyText
+
+#two:
+  #name: MyString
+  #slug: MyString
+  #description: MyText
+

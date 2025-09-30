@@ -1,0 +1,22 @@
+name = "new_marketplace-app"
+compatibility_date = "2025-09-30"
+pages_build_output_dir = "public"
+
+[env.production]
+name = "marketplace-production"
+
+[env.production.vars]
+RAILS_ENV = "production"
+SECRET_KEY_BASE = "5226b2df5bc5bee2279efd742bf429062102be8b4009831a633a4e14a70ea4062d351160f05cbbfa738f91ad5cd6813e9c8c367a6344478b15436270c59200ca" 
+
+[[env.production.kv_namespaces]]
+binding = "NEW_MARKETPLACE_CACHE"
+id = "15aa2392298642698ab739b518ca75cb" 
+
+[[env.production.d1_databases]]
+binding = "new_marketplace_db"
+database_name = "new_marketplace-db"
+database_id = "0070cff4-a594-4a3b-b08f-5e505bb14071"
+
+[build]
+command = "bundle exec rails assets:precompile && bundle exec rails db:migrate"

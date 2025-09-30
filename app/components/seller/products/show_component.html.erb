@@ -1,0 +1,33 @@
+<%= render(Seller::Shared::LayoutComponent.new(title: @product.name)) do %> [cite: 1]
+  <div class="bg-white rounded-lg shadow-sm p-8 max-w-3xl mx-auto">
+    <div class="flex justify-end gap-4 mb-6">
+      <%= link_to "← Back to Products", seller_products_path, class: "text-sm font-medium text-blue-600" %>
+      <%= link_to "Edit Product", edit_seller_product_path(@product), class: "px-4 py-2 rounded-lg border text-sm" %>
+    </div>
+
+    <%# FIXED: Changed from .image (singular) to .images (plural) to handle multiple attachments %>
+    <% if @product.images.attached? %>
+      <div class="mb-6">
+        <%# Display the first image %>
+        <%= image_tag @product.images.first, class: "w-full h-auto max-h-96 object-contain rounded-lg" %>
+      </div>
+    <% end %>
+
+    <div class="space-y-4">
+      <div>
+        <h2 class="text-sm font-medium text-gray-500">Description</h2>
+        <p class="mt-1 text-gray-900"><%= @product.description %></p>
+      </div>
+      <div class="grid grid-cols-2 gap-4 pt-4 border-t">
+        <div>
+          <h2 class="text-sm font-medium text-gray-500">Price</h2> [cite: 3]
+          <p class="mt-1 text-gray-900 font-semibold"><%= number_to_currency(@product.price) %></p> [cite: 3]
+        </div>
+        <div>
+          <h2 class="text-sm font-medium text-gray-500">Stock Quantity</h2>
+          <p class="mt-1 text-gray-900 font-semibold"><%= @product.stock_quantity %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

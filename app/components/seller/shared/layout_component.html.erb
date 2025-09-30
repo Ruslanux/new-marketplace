@@ -1,0 +1,23 @@
+<div class="flex h-screen bg-gray-100 font-sans">
+  <!-- Sidebar -->
+  <div class="w-64 bg-gray-800 text-white flex-shrink-0">
+    <div class="px-6 py-5 border-b border-gray-700">
+      <h2 class="text-xl font-semibold tracking-wider">Seller Panel</h2>
+    </div>
+    <nav class="flex-grow p-4 space-y-1">
+      <%= seller_nav_link("Dashboard", seller_root_path) %>
+      <%= seller_nav_link("My Products", seller_products_path) %>
+      <%= seller_nav_link("My Orders", seller_orders_path) %>
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <header class="bg-white border-b border-gray-200 px-6 py-4">
+      <h1 class="text-2xl font-bold text-gray-800"><%= @title %></h1>
+    </header>
+    <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6">
+      <%== content %>
+    </main>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: customer # <-- Use the 'customer' user
+  product: one
+  rating: 5
+  comment: "Excellent product!"
+
+two:
+  user: customer # <-- Use the 'customer' user
+  product: two
+  rating: 4
+  comment: "Very helpful book."

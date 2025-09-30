@@ -1,0 +1,47 @@
+<%= render(Seller::Shared::LayoutComponent.new(title: "Order ##{@order.id}")) do %>
+  <div class="bg-white rounded-lg shadow-sm p-8 max-w-4xl mx-auto">
+    <div class="flex justify-end gap-4 mb-6">
+      <%= link_to "← Back to Orders", seller_orders_path, class: "text-sm font-medium text-blue-600" %>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <%# Main Order Details %>
+      <div class="md:col-span-2">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Order Items</h3>
+        <div class="divide-y divide-gray-200">
+          <% @order.order_items.each do |item| %>
+            <div class="flex items-center justify-between py-4">
+              <div class="flex items-center">
+                <% if item.product.images.attached? %>
+                  <%= image_tag item.product.images.first, class: "h-16 w-16 object-cover rounded-md mr-4" %>
+                <% else %>
+                   <div class="h-16 w-16 bg-gray-100 rounded-md mr-4"></div>
+                <% end %>
+                <div>
+                  <p class="font-medium text-gray-900"><%= item.product.name %></p>
+                  <p class="text-sm text-gray-500">Qty: <%= item.quantity %></p>
+                </div>
+              </div>
+              <p class="font-medium text-gray-900"><%= number_to_currency(item.total_price) %></p>
+            </div>
+          <% end %>
+        </div>
+        <div class="border-t mt-4 pt-4 text-right">
+          <p class="text-lg font-semibold text-gray-900">Total: <%= number_to_currency(@order.total_amount) %></p>
+        </div>
+      </div>
+
+      <%# Customer & Status Sidebar %>
+      <div class="space-y-6">
+        <div class="bg-gray-50 rounded-lg p-6">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">Customer</h4>
+          <p class="text-gray-700"><%= @order.user.full_name.presence || @order.user.email_address %></p>
+        </div>
+        <div class="bg-gray-50 rounded-lg p-6">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">Order Status</h4>
+          <p class="text-gray-700 font-medium"><%= @order.status.titleize %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,9 @@
+# SPA fallback for client-side routing
+/admin/* /admin/index.html 200
+/vendors/* /vendors/index.html 200
+
+# API routes
+/api/* /api/:splat 200
+
+# Force HTTPS
+http://new_marketplace.your-domain.com/* https://new_marketplace.your-domain.com/:splat 301!

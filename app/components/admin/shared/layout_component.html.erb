@@ -1,0 +1,44 @@
+<div class="flex h-screen bg-gray-100 font-sans">
+  <!-- Sidebar -->
+  <div class="w-64 bg-gray-800 text-white flex-shrink-0">
+    <div class="px-6 py-5 border-b border-gray-700">
+      <h2 class="text-xl font-semibold tracking-wider">Admin Panel</h2>
+    </div>
+    <nav class="flex-grow p-4 space-y-1">
+      <%# FIXED: Moved the link logic directly into the template to resolve the syntax error %>
+      <%
+        nav_links = {
+          "Dashboard" => admin_root_path,
+          "Users" => admin_users_path,
+          "Products" => admin_products_path,
+          "Categories" => admin_categories_path,
+          "Orders" => admin_orders_path
+        }
+      %>
+
+      <% nav_links.each do |text, path| %>
+        <%
+          active = request.path.starts_with?(path)
+          active = true if request.path == admin_root_path && path == admin_root_path # Edge case for dashboard
+          
+          base_classes = "flex items-center px-4 py-2 rounded-md text-sm font-medium transition-colors"
+          active_classes = "bg-gray-900 text-white"
+          inactive_classes = "text-gray-300 hover:bg-gray-700 hover:text-white"
+          classes = active ? "#{base_classes} #{active_classes}" : "#{base_classes} #{inactive_classes}"
+        %>
+        <%= link_to text, path, class: classes %>
+      <% end %>
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <header class="bg-white border-b border-gray-200 px-6 py-4">
+      <h1 class="text-2xl font-bold text-gray-800"><%= @title %></h1>
+    </header>
+    <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6">
+      <%== content %>
+    </main>
+  </div>
+</div>
+

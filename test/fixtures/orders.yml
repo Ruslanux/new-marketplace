@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: customer # <-- Use the 'customer' user
+  total_amount: 1299.99
+  status: 1
+
+two:
+  user: customer # <-- Use the 'customer' user
+  total_amount: 29.99
+  status: 0
