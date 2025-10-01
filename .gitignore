@@ -35,3 +35,10 @@
 
 /app/assets/builds/*
 !/app/assets/builds/.keep
+
+# Ignore node_modules and Wrangler state
+/node_modules
+/.wrangler
+
+# Ignore local database files
+/storage/*.sqlite3
