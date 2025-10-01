@@ -3,7 +3,7 @@ compatibility_date = "2025-09-30"
 pages_build_output_dir = "public"
 
 [env.production]
-name = "marketplace-production"
+name = "new_marketplace-production"
 
 [env.production.vars]
 RAILS_ENV = "production"
@@ -14,9 +14,6 @@ binding = "NEW_MARKETPLACE_CACHE"
 id = "15aa2392298642698ab739b518ca75cb" 
 
 [[env.production.d1_databases]]
-binding = "new_marketplace_db"
-database_name = "new_marketplace-db"
+binding = "DB"
+database_name = "new-marketplace-db"
 database_id = "0070cff4-a594-4a3b-b08f-5e505bb14071"
-
-[build]
-command = "bundle exec rails assets:precompile && bundle exec rails db:migrate"
