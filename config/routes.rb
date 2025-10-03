@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get "checkouts/create"
   # Health check
   get "up" => "rails/health#show", as: :rails_health_check
 
@@ -17,9 +16,6 @@ Rails.application.routes.draw do
 
   get  "sign_up", to: "registrations#new"
   post "sign_up", to: "registrations#create"
-
-  # resource :session
-  # resources :passwords, param: :token
 
   # Product routes
   resources :products, only: [ :index, :show ] do
@@ -45,11 +41,9 @@ Rails.application.routes.draw do
   namespace :seller do
     root "dashboard#index"
     resources :products do
-      # This adds the /seller/products/discarded path
       collection do
         get :discarded
       end
-      # This adds the /seller/products/:id/restore path
       member do
         patch :restore
       end
@@ -65,11 +59,9 @@ Rails.application.routes.draw do
     resources :products
     resources :orders, only: [ :index, :show, :update ]
     resources :categories do
-      # This adds the /admin/categories/discarded path
       collection do
         get :discarded
       end
-      # This adds the /admin/categories/:id/restore path
       member do
         patch :restore
       end
