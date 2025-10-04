@@ -1,7 +1,14 @@
-# Inherit from the most basic controller to bypass all custom logic
-class HomeController < ActionController::Base
+class HomeController < ApplicationController
+  skip_before_action :require_authentication, only: [ :index ]
+
   def index
-    # Render simple text directly to bypass the view system entirely
-    render plain: "HomeController is working!"
+    @featured_products = Product.available.includes(:category, :user, images_attachments: :blob).limit(8)
+    @categories = Category.all
+
+    render_component(Home::IndexComponent,
+      featured_products: @featured_products,
+      categories: @categories,
+      current_user: current_user
+    )
   end
 end
