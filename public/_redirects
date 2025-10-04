@@ -1,1 +1,12 @@
-/* / 200
+# SPA fallback for client-side routing
+/admin/* /admin/index.html 200
+/vendors/* /vendors/index.html 200
+
+# API routes
+/api/* /api/:splat 200
+
+# Force HTTPS
+http://new-marketplace.your-domain.com/* https://new-marketplace.your-domain.com/:splat 301
+
+# Catch-all for the Rails router
+/* /    200
