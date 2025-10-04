@@ -1,14 +1,7 @@
-class HomeController < ApplicationController
-  skip_before_action :require_authentication, only: [ :index ]
-
+# Inherit from the most basic controller to bypass all custom logic
+class HomeController < ActionController::Base
   def index
-    @featured_products = [] # Use an empty array instead of querying the DB
-    @categories = []      # Use an empty array instead of querying the DB
-
-    # render_component(Home::IndexComponent,
-    #  featured_products: @featured_products,
-    #  categories: @categories,
-    #  current_user: current_user
-    # )
+    # Render simple text directly to bypass the view system entirely
+    render plain: "HomeController is working!"
   end
 end
